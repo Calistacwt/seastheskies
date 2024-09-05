@@ -1,0 +1,9 @@
+# Directory
+.git
+node_modules
+dist
+
+# Files
+.dockerignore
+Dockerfile
+npm-debug.log

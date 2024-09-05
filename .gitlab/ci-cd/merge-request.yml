@@ -1,0 +1,20 @@
+stages:
+  - test
+
+test:code-quality:
+  stage: test
+  image: node:20-alpine
+  script:
+    - npm ci
+    - npm run lint
+    - npm run format
+    - npm run typecheck
+    - npm audit --audit-level=high
+  after_script:
+    - rm -rf node_modules
+  # Executed only on these condition
+  rules:
+    - if: $CI_SERVER_HOST == "code.nbs.dev" && $CI_PIPELINE_SOURCE == "merge_request_event"
+  # Runner Executor
+  tags:
+    - nbs--docker-runner

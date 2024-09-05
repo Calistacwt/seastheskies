@@ -1,0 +1,11 @@
+stages:
+  #- quality-gate
+  #- build
+  #- deploy
+  - test
+
+include:
+  - local: .gitlab/ci-cd/merge-request.yml
+  #- local: .gitlab/ci-cd/development.yml
+  #- local: .gitlab/ci-cd/staging.yml
+  #- local: .gitlab/ci-cd/production.yml

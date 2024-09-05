@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "nbs-js"
+  },
+  "targets": {
+    "nbs-js": {
+      "hosting": {
+        "deployment": [
+          "skeleton-react-vite"
+        ]
+      }
+    }
+  }
+}

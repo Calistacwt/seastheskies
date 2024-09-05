@@ -1,0 +1,177 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "globals": {
+    "JSX": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "react",
+    "react-hooks",
+    "simple-import-sort",
+    "unused-imports"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "'*.{jsx,tsx}"
+      ],
+      "extends": [
+        "plugin:tailwindcss/recommended"
+      ],
+      "rules": {
+        "tailwindcss/no-custom-classname": "off"
+      }
+    }
+  ],
+  "rules": {
+    // default
+    "no-unused-vars": "off",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "semi": [
+      "warn",
+      "never"
+    ],
+    "quotes": [
+      "warn",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
+    // react
+    "react/display-name": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-wrap-multilines": [
+      "warn",
+      {
+        "declaration": "parens-new-line",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "condition": "parens-new-line",
+        "prop": "ignore"
+      }
+    ],
+    "react/jsx-tag-spacing": [
+      "warn",
+      {
+        "beforeSelfClosing": "always"
+      }
+    ],
+    "react/jsx-closing-bracket-location": "warn",
+    "react/jsx-closing-tag-location": "warn",
+    "react/jsx-pascal-case": [
+      "warn",
+      {
+        "allowAllCaps": false,
+        "allowNamespace": true,
+        "allowLeadingUnderscore": false
+      }
+    ],
+    "react/jsx-filename-extension": [
+      "warn",
+      {
+        "extensions": [
+          ".tsx"
+        ]
+      }
+    ],
+    "react/jsx-curly-brace-presence": [
+      "warn",
+      {
+        "props": "never",
+        "children": "never"
+      }
+    ],
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
+    // react hooks
+    "react-hooks/exhaustive-deps": "off",
+    // @typescript
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars-experimental": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/semi": "off",
+    // simple import sort
+    "simple-import-sort/exports": "warn",
+    "simple-import-sort/imports": [
+      "warn",
+      {
+        "groups": [
+          // ext library & side effect imports
+          [
+            "^@?\\w"
+          ],
+          // other imports
+          [
+            "^@/"
+          ],
+          // {s}css files
+          [
+            "^.+\\.s?css$"
+          ],
+          // relative paths up until 3 level
+          [
+            "^\\./?$",
+            "^\\.(?!/?$)",
+            "^\\.\\./?$",
+            "^\\.\\.(?!/?$)",
+            "^\\.\\./\\.\\./?$",
+            "^\\.\\./\\.\\.(?!/?$)",
+            "^\\.\\./\\.\\./\\.\\./?$",
+            "^\\.\\./\\.\\./\\.\\.(?!/?$)"
+          ],
+          // public imports
+          [
+            "~/"
+          ],
+          // other that didn't fit in
+          [
+            "^"
+          ]
+        ]
+      }
+    ],
+    // unused-imports
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
+}

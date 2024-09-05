@@ -1,0 +1,77 @@
+stages:
+  - quality-gate
+  - build
+  - deploy
+
+quality-gate:sonarqube:
+  stage: quality-gate
+  image:
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  script:
+    - sonar-scanner
+  allow_failure: true
+  # Executed only on these condition
+  rules:
+    - if: $CI_SERVER_HOST == "code.nbs.dev" && $CI_COMMIT_BRANCH == "develop"
+  # Executor
+  tags:
+    - nbs--docker-runner
+
+build:development:
+  stage: build
+  image: nbsdev/docker-builder:20
+  script:
+    # Create Env File
+    - cp $ENV_FILE .env.production
+    - echo "APP_VERSION=\"${CI_COMMIT_SHORT_SHA}\"" >> .env
+    - echo "APP_BUILD_SIGNATURE=\"${CI_COMMIT_SHA}\"" >> .env
+    # Build docker
+    - docker build -f ./deployments/web/Dockerfile -t ${CI_REGISTRY_IMAGE}:latest  .
+    # Push docker
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} --password-stdin
+    - docker push ${CI_REGISTRY_IMAGE}:latest
+    # Remove versioned docker
+    - docker rmi ${CI_REGISTRY_IMAGE}:latest
+  # Define Environment
+  environment:
+    name: development
+    url: https://d-nbs-hr-cms-web-apps.web.app
+  # Executed only on these condition
+  rules:
+    - if: $CI_SERVER_HOST == "code.nbs.dev" && $CI_COMMIT_BRANCH == "develop"
+  # Executor
+  tags:
+    - nbs--docker-runner
+
+deploy:development:
+  stage: deploy
+  image:
+    name: cr.nbs.dev/dt/kubectl:1.22.7
+    entrypoint: [ "" ]
+  needs:
+    - build:development
+  script:
+    # Rollout & Restart Deployment
+    - kubectl
+      --kubeconfig="/dev/null"
+      --server=${K8S_SERVER}
+      --certificate-authority=${K8S_SERVER_CERT_FILE}
+      --token=${K8S_TOKEN}
+      --namespace=${K8S_NAMESPACE}
+      rollout
+      restart
+      deployment/${K8S_DEPLOYMENT}
+  # Define Environment
+  environment:
+    name: development
+    url: https://d-nbs-hr-cms-web-apps.web.app
+  # Executed only on these condition
+  rules:
+    - if: $CI_SERVER_HOST == "code.nbs.dev" && $CI_COMMIT_BRANCH == "develop"
+  # Executor
+  tags:
+    - nbs--docker-runner

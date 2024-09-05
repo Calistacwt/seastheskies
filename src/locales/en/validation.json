@@ -1,0 +1,7 @@
+{
+  "auth": "These credentials do not match our records",
+  "required": "This filed is required",
+  "email": "Email is not valid",
+  "confirm": "The {{field}} and its confirm are not the same",
+  "password": "Make sure the password consists of 8 or more characters with a mix of letters, numbers & symbols."
+}

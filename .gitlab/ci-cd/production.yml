@@ -1,0 +1,32 @@
+stages:
+  - build
+
+build:production:
+  stage: build
+  image: nbsdev/docker-builder:20
+  script:
+    # Create Env File
+    - cp $ENV_FILE .env.production
+    - echo "APP_VERSION=${CI_COMMIT_TAG}" >> .env
+    - echo "APP_BUILD_SIGNATURE=\"${CI_COMMIT_SHA}\"" >> .env
+    # Build docker
+    - docker build -f ./deployments/web/Dockerfile -t ${CI_REGISTRY_IMAGE}/prod:${CI_COMMIT_TAG} -t ${CI_REGISTRY_IMAGE}/prod:latest
+    # Push docker
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login ${CI_REGISTRY} -u ${CI_REGISTRY_USER} --password-stdin
+    - docker push ${CI_REGISTRY_IMAGE}/prod:${CI_COMMIT_TAG}
+    - docker push ${CI_REGISTRY_IMAGE}/prod:latest
+    # Remove versioned docker
+    - docker rmi ${CI_REGISTRY_IMAGE}/prod:${CI_COMMIT_TAG}
+    - docker rmi ${CI_REGISTRY_IMAGE}/prod:latest
+  # Define Environment
+  environment:
+    name: production
+    url: https://nbs-hr-cms-web-apps.web.app
+  # Executed only on these condition
+  rules:
+    - if: $CI_SERVER_HOST == "code.nbs.dev" && $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+/
+  # Conditions for when jobs run
+  when: manual
+  # Executor
+  tags:
+    - nbs--docker-runner
