@@ -159,17 +159,21 @@ const mainRoute = createRoute({
   path: '/',
   getParentRoute: () => rootDashboardRoute,
   beforeLoad: ({ location }) => {
-    if (isHasUserAccessToken() || isHasUserRefreshToken()) {
-      throw redirect({
-        to: '/dashboard',
-      })
-    }
+    // if (isHasUserAccessToken() || isHasUserRefreshToken()) {
+    //   throw redirect({
+    //     to: '/dashboard',
+    //   })
+    // }
+    //
+    // throw redirect({
+    //   to: '/auth/login',
+    //   search: {
+    //     redirect: location.href !== '/' ? location.href : undefined,
+    //   },
+    // })
 
     throw redirect({
-      to: '/auth/login',
-      search: {
-        redirect: location.href !== '/' ? location.href : undefined,
-      },
+      to: '/dashboard',
     })
   },
 })
@@ -190,8 +194,8 @@ const dashboardRoute = createRoute({
           },
         ],
         // permission
-        action: Actions.Access,
-        ability: Abilities.Dashboard,
+        // action: Actions.Access,
+        // ability: Abilities.Dashboard,
         // guard
         signed: true,
       },

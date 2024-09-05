@@ -4,12 +4,12 @@ import { useDocumentTitle } from 'usehooks-ts'
 
 import { appName } from '@/config/env'
 import useAppSelector from '@/hooks/useAppSelector'
-import useAuth from '@/hooks/useAuth'
+// import useAuth from '@/hooks/useAuth'
 
 const AuthLayout: FC = () => {
   const content = useAppSelector((state) => state.content)
 
-  useAuth()
+  // useAuth()
 
   useDocumentTitle(`${content.title} - ${appName}`)
 

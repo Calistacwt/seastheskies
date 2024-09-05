@@ -8,7 +8,7 @@ import profileMenu from '@/config/profile-menu'
 import sidebarMenu from '@/config/sidebar-menu'
 import useAppDispatch from '@/hooks/useAppDispatch'
 import useAppSelector from '@/hooks/useAppSelector'
-import useAuth from '@/hooks/useAuth'
+// import useAuth from '@/hooks/useAuth'
 import { setLayoutSidebarExpand, setLayoutSidebarOpen } from '@/reducers/layout'
 import { clearProfileData } from '@/reducers/profile'
 import { useLogoutMutation } from '@/services/auth'
@@ -46,7 +46,7 @@ const DashboardLayout: FC = () => {
     dispatch(clearProfileData())
   }
 
-  useAuth()
+  // useAuth()
 
   useDocumentTitle(`${content.title} - ${appName}`)
 
